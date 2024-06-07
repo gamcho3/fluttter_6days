@@ -6,12 +6,12 @@ import 'package:todo_list/todo_model.dart';
 class SubmitButton extends StatelessWidget {
   const SubmitButton({
     super.key,
-    required this.widget,
-    required TextEditingController controller,
-  }) : _controller = controller;
+    required this.controller,
+    required this.todoNotifier,
+  });
 
-  final InputField widget;
-  final TextEditingController _controller;
+  final TextEditingController controller;
+  final ValueNotifier<List<TodoModel>> todoNotifier;
 
   @override
   Widget build(BuildContext context) {
@@ -21,20 +21,20 @@ class SubmitButton extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(30),
         onTap: () {
-          if (_controller.text.isEmpty)
+          if (controller.text.isEmpty)
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text('할일을 정확히 입력해 주세요.'),
               ),
             );
 
-          widget.todoNotifier.value = [
-            ...widget.todoNotifier.value,
+          todoNotifier.value = [
+            ...todoNotifier.value,
             TodoModel(
-              title: _controller.text,
+              title: controller.text,
             )
           ];
-          _controller.clear();
+          controller.clear();
         },
         child: Container(
           padding: EdgeInsets.all(10),

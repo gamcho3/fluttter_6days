@@ -14,6 +14,7 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // 상태관리
     final ValueNotifier<List<TodoModel>> todoNotifier =
         ValueNotifier<List<TodoModel>>([]);
     return MaterialApp(

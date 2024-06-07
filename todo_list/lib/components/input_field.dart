@@ -40,7 +40,10 @@ class _InputFIeldState extends State<InputField> {
           SizedBox(
             width: 10,
           ),
-          SubmitButton(widget: widget, controller: _controller)
+          SubmitButton(
+            controller: _controller,
+            todoNotifier: widget.todoNotifier,
+          )
         ],
       ),
     );
