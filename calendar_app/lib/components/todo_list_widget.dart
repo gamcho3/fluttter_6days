@@ -34,16 +34,13 @@ class _TodoListWidgetState extends State<TodoListWidget> {
             return const Center(child: Text('목록이 비었습니다.'));
           }
 
-          return ListView.separated(
+          return ListView.builder(
             itemCount: data.length,
             itemBuilder: (context, index) {
               return TodoWidget(
                 todo: data[index],
               );
             },
-            separatorBuilder: (context, index) => const SizedBox(
-              height: 10,
-            ),
           );
         });
   }
@@ -65,8 +62,22 @@ class TodoWidget extends StatelessWidget {
       onTap: () {},
       trailing: Container(
         width: 20,
-        decoration: BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+        decoration:
+            BoxDecoration(color: setColor(todo.status), shape: BoxShape.circle),
       ),
     );
+  }
+
+  Color setColor(String status) {
+    switch (status) {
+      case 'work':
+        return TodoStatus.work.color;
+      case 'personal':
+        return TodoStatus.personal.color;
+      case 'other':
+        return TodoStatus.other.color;
+      default:
+        return Colors.black;
+    }
   }
 }

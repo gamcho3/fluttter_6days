@@ -4,9 +4,10 @@ import 'package:drift/drift.dart';
 
 abstract class TodoRepository {
   Future<List<Todo>> getTodos({required String date});
-  Future<void> addNewTodo(Todo todo);
+  Future<void> addNewTodo(TodoItemsCompanion todo);
   // Future<void> updateTodo(Todo todo);
   Future<void> deleteTodoById(int id);
+  Future<void> deleteAll();
 }
 
 class TodoRepositoryImpl implements TodoRepository {
@@ -20,17 +21,16 @@ class TodoRepositoryImpl implements TodoRepository {
   }
 
   @override
-  Future<void> addNewTodo(Todo todo) {
-    return _database.insertTodoItem(
-        item: TodoItemsCompanion.insert(
-            title: todo.title,
-            content: Value(todo.content),
-            createdAt: todo.createdAt,
-            date: todo.date));
+  Future<void> addNewTodo(TodoItemsCompanion todoItem) {
+    return _database.insertTodoItem(item: todoItem);
   }
 
   @override
   Future<void> deleteTodoById(int id) {
     return _database.deleteTodoItem(id);
+  }
+
+  Future<void> deleteAll() {
+    return _database.deleteAllTodoItem();
   }
 }

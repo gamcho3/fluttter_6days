@@ -1,4 +1,5 @@
 import 'package:calendar_app/bloc/todo_bloc.dart';
+import 'package:calendar_app/common/common_method.dart';
 import 'package:calendar_app/model/todo_model.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -21,7 +22,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
   @override
   void initState() {
     // 현재 날짜의 할일을 가져옴
-    _bloc.getTiemWithDate(DateTime.now());
+    // _bloc.getTiemWithDate(CommonMethod.dateFormatToString(DateTime.now()));
     super.initState();
   }
 
@@ -41,7 +42,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
         return isSameDay(_isSelectedDay, day);
       },
       onDaySelected: (selectedDay, focusedDay) {
-        _bloc.getTiemWithDate(selectedDay);
+        // _bloc.getTiemWithDate(CommonMethod.dateFormatToString(selectedDay));
         // 선택날짜와 보여지는 달 저장
         setState(() {
           _isSelectedDay = selectedDay;

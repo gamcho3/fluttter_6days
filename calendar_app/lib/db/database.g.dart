@@ -22,7 +22,14 @@ class $TodoItemsTable extends TodoItems with TableInfo<$TodoItemsTable, Todo> {
   late final GeneratedColumn<String> title = GeneratedColumn<String>(
       'title', aliasedName, false,
       additionalChecks:
-          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 30),
+          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 50),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+      'status', aliasedName, false,
+      additionalChecks: GeneratedColumn.checkTextLength(maxTextLength: 10),
       type: DriftSqlType.string,
       requiredDuringInsert: true);
   static const VerificationMeta _contentMeta =
@@ -37,17 +44,20 @@ class $TodoItemsTable extends TodoItems with TableInfo<$TodoItemsTable, Todo> {
   @override
   late final GeneratedColumn<String> date = GeneratedColumn<String>(
       'date', aliasedName, false,
-      additionalChecks: GeneratedColumn.checkTextLength(maxTextLength: 30),
+      additionalChecks: GeneratedColumn.checkTextLength(maxTextLength: 50),
       type: DriftSqlType.string,
       requiredDuringInsert: true);
   static const VerificationMeta _createdAtMeta =
       const VerificationMeta('createdAt');
   @override
   late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
-      'created_at', aliasedName, false,
-      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+      'created_at', aliasedName, true,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: Constant(DateTime.now()));
   @override
-  List<GeneratedColumn> get $columns => [id, title, content, date, createdAt];
+  List<GeneratedColumn> get $columns =>
+      [id, title, status, content, date, createdAt];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -67,6 +77,12 @@ class $TodoItemsTable extends TodoItems with TableInfo<$TodoItemsTable, Todo> {
     } else if (isInserting) {
       context.missing(_titleMeta);
     }
+    if (data.containsKey('status')) {
+      context.handle(_statusMeta,
+          status.isAcceptableOrUnknown(data['status']!, _statusMeta));
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
     if (data.containsKey('content')) {
       context.handle(_contentMeta,
           content.isAcceptableOrUnknown(data['content']!, _contentMeta));
@@ -80,8 +96,6 @@ class $TodoItemsTable extends TodoItems with TableInfo<$TodoItemsTable, Todo> {
     if (data.containsKey('created_at')) {
       context.handle(_createdAtMeta,
           createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
-    } else if (isInserting) {
-      context.missing(_createdAtMeta);
     }
     return context;
   }
@@ -98,10 +112,12 @@ class $TodoItemsTable extends TodoItems with TableInfo<$TodoItemsTable, Todo> {
           .read(DriftSqlType.string, data['${effectivePrefix}title'])!,
       date: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}date'])!,
+      status: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}status'])!,
       content: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}content']),
       createdAt: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at']),
     );
   }
 
@@ -114,12 +130,14 @@ class $TodoItemsTable extends TodoItems with TableInfo<$TodoItemsTable, Todo> {
 class TodoItemsCompanion extends UpdateCompanion<Todo> {
   final Value<int> id;
   final Value<String> title;
+  final Value<String> status;
   final Value<String?> content;
   final Value<String> date;
-  final Value<DateTime> createdAt;
+  final Value<DateTime?> createdAt;
   const TodoItemsCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
+    this.status = const Value.absent(),
     this.content = const Value.absent(),
     this.date = const Value.absent(),
     this.createdAt = const Value.absent(),
@@ -127,15 +145,17 @@ class TodoItemsCompanion extends UpdateCompanion<Todo> {
   TodoItemsCompanion.insert({
     this.id = const Value.absent(),
     required String title,
+    required String status,
     this.content = const Value.absent(),
     required String date,
-    required DateTime createdAt,
+    this.createdAt = const Value.absent(),
   })  : title = Value(title),
-        date = Value(date),
-        createdAt = Value(createdAt);
+        status = Value(status),
+        date = Value(date);
   static Insertable<Todo> custom({
     Expression<int>? id,
     Expression<String>? title,
+    Expression<String>? status,
     Expression<String>? content,
     Expression<String>? date,
     Expression<DateTime>? createdAt,
@@ -143,6 +163,7 @@ class TodoItemsCompanion extends UpdateCompanion<Todo> {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (title != null) 'title': title,
+      if (status != null) 'status': status,
       if (content != null) 'content': content,
       if (date != null) 'date': date,
       if (createdAt != null) 'created_at': createdAt,
@@ -152,12 +173,14 @@ class TodoItemsCompanion extends UpdateCompanion<Todo> {
   TodoItemsCompanion copyWith(
       {Value<int>? id,
       Value<String>? title,
+      Value<String>? status,
       Value<String?>? content,
       Value<String>? date,
-      Value<DateTime>? createdAt}) {
+      Value<DateTime?>? createdAt}) {
     return TodoItemsCompanion(
       id: id ?? this.id,
       title: title ?? this.title,
+      status: status ?? this.status,
       content: content ?? this.content,
       date: date ?? this.date,
       createdAt: createdAt ?? this.createdAt,
@@ -172,6 +195,9 @@ class TodoItemsCompanion extends UpdateCompanion<Todo> {
     }
     if (title.present) {
       map['title'] = Variable<String>(title.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
     }
     if (content.present) {
       map['content'] = Variable<String>(content.value);
@@ -190,6 +216,7 @@ class TodoItemsCompanion extends UpdateCompanion<Todo> {
     return (StringBuffer('TodoItemsCompanion(')
           ..write('id: $id, ')
           ..write('title: $title, ')
+          ..write('status: $status, ')
           ..write('content: $content, ')
           ..write('date: $date, ')
           ..write('createdAt: $createdAt')

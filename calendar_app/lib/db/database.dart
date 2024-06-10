@@ -4,7 +4,7 @@ import 'package:calendar_app/model/todo_model.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:sqlite3_flutter_libs/sqlite3_flutter_libs.dart';
+
 import 'package:path/path.dart' as p;
 
 part 'database.g.dart';
@@ -12,10 +12,12 @@ part 'database.g.dart';
 @UseRowClass(Todo)
 class TodoItems extends Table {
   IntColumn get id => integer().autoIncrement()();
-  TextColumn get title => text().withLength(min: 1, max: 30)();
+  TextColumn get title => text().withLength(min: 1, max: 50)();
+  TextColumn get status => text().withLength(max: 10)();
   TextColumn get content => text().withLength(max: 50).nullable()();
-  TextColumn get date => text().withLength(max: 30)();
-  DateTimeColumn get createdAt => dateTime()();
+  TextColumn get date => text().withLength(max: 50)();
+  DateTimeColumn get createdAt =>
+      dateTime().nullable().withDefault(Constant(DateTime.now()))();
 }
 
 @DriftDatabase(tables: [TodoItems])
@@ -35,8 +37,11 @@ class AppDatabase extends _$AppDatabase {
     await (delete(todoItems)..where((e) => e.id.equals(id))).go();
   }
 
+  Future<void> deleteAllTodoItem() async {
+    await delete(todoItems).go();
+  }
+
   @override
-  // TODO: implement schemaVersion
   int get schemaVersion => 1;
 }
 
