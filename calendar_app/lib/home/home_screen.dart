@@ -1,4 +1,3 @@
-import 'package:calendar_app/bloc/todo_bloc.dart';
 import 'package:calendar_app/components/calendar.dart';
 import 'package:calendar_app/components/todo_form.dart';
 import 'package:calendar_app/components/todo_list_widget.dart';
@@ -24,8 +23,6 @@ class Home extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // final bloc = TodoBloc();
-          // bloc.deleteAll();
           showModalBottomSheet(
               context: context,
               builder: (context) {

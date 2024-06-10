@@ -9,10 +9,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  path: ^1.9.0
-  path_provider: ^2.1.3
-  drift: ^2.18.0
-  sqlite3_flutter_libs: ^0.5.23
   # 달력 라이브러리
   table_calendar: ^3.1.1
   # 다국어 지원
@@ -22,8 +18,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^3.0.0
-  drift_dev: ^2.18.0
-  build_runner: ^2.4.11
+
 
 flutter:
   uses-material-design: true

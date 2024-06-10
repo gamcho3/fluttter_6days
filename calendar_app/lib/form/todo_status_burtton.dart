@@ -1,21 +1,21 @@
 import 'package:calendar_app/model/todo_model.dart';
 import 'package:flutter/material.dart';
 
-class ScheduleButton extends StatefulWidget {
+class TodoStatusButton extends StatefulWidget {
   final TodoStatus type;
   final ValueNotifier<TodoStatus> selectedType;
 
-  const ScheduleButton({
+  const TodoStatusButton({
     super.key,
     required this.type,
     required this.selectedType,
   });
 
   @override
-  State<ScheduleButton> createState() => _ScheduleButtonState();
+  State<TodoStatusButton> createState() => _TodoStatusButtonState();
 }
 
-class _ScheduleButtonState extends State<ScheduleButton> {
+class _TodoStatusButtonState extends State<TodoStatusButton> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

@@ -1,6 +1,6 @@
-import 'package:calendar_app/bloc/todo_bloc.dart';
+import 'package:calendar_app/common/dummy_data.dart';
 import 'package:calendar_app/model/todo_model.dart';
-import 'package:calendar_app/repository/todo_repository.dart';
+
 import 'package:flutter/material.dart';
 
 class TodoListWidget extends StatefulWidget {
@@ -13,36 +13,16 @@ class TodoListWidget extends StatefulWidget {
 }
 
 class _TodoListWidgetState extends State<TodoListWidget> {
-  final TodoBloc _todoBloc = TodoBloc();
-
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<Todo>>(
-        stream: _todoBloc.todoListStream,
-        builder: (context, AsyncSnapshot<List<Todo>> snapshot) {
-          if (snapshot.hasError) {
-            return const Center(child: Text('Error'));
-          }
-
-          if (!snapshot.hasData) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          final data = snapshot.data!;
-
-          if (data.isEmpty) {
-            return const Center(child: Text('목록이 비었습니다.'));
-          }
-
-          return ListView.builder(
-            itemCount: data.length,
-            itemBuilder: (context, index) {
-              return TodoWidget(
-                todo: data[index],
-              );
-            },
-          );
-        });
+    return ListView.builder(
+      itemCount: DUMMY_DATA.length,
+      itemBuilder: (context, index) {
+        return TodoWidget(
+          todo: DUMMY_DATA[index],
+        );
+      },
+    );
   }
 }
 

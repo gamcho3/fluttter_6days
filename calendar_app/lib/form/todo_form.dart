@@ -1,6 +1,5 @@
-import 'package:calendar_app/bloc/todo_bloc.dart';
 import 'package:calendar_app/common/common_method.dart';
-import 'package:calendar_app/components/todo_status_button.dart';
+import 'package:calendar_app/home/todo_status_button.dart';
 import 'package:calendar_app/model/todo_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -19,8 +18,6 @@ class _TodoFormState extends State<TodoForm> {
   final _titleController = TextEditingController();
   final _contentController = TextEditingController();
   final _key = GlobalKey<FormState>();
-
-  final bloc = TodoBloc();
 
   final ValueNotifier<TodoStatus> selectedType = ValueNotifier(TodoStatus.work);
 
@@ -108,11 +105,7 @@ class _TodoFormState extends State<TodoForm> {
                     final title = _titleController.text;
                     final content = _contentController.text;
                     final date = CommonMethod.dateFormatToString(_setDate);
-                    bloc.addTodo(
-                        title: title,
-                        content: content,
-                        date: date,
-                        status: selectedType.value);
+
                     Navigator.pop(context);
                   }
                 },
