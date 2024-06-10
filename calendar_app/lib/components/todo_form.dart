@@ -1,6 +1,6 @@
 import 'package:calendar_app/bloc/todo_bloc.dart';
 import 'package:calendar_app/common/common_method.dart';
-import 'package:calendar_app/components/todo_status_button.dart';
+import 'package:calendar_app/home/todo_status_button.dart';
 import 'package:calendar_app/model/todo_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';

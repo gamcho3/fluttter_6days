@@ -1,14 +1,9 @@
 import 'dart:async';
 
-import 'package:calendar_app/db/database.dart';
+import 'package:calendar_app/common/dummy_data.dart';
 import 'package:calendar_app/model/todo_model.dart';
-import 'package:calendar_app/repository/todo_repository.dart';
-import 'package:drift/drift.dart';
-import 'package:intl/intl.dart';
 
 class TodoBloc {
-  final TodoRepository _todoRepository = TodoRepositoryImpl(AppDatabase());
-
   static final TodoBloc _instance = TodoBloc._insternal();
 
   TodoBloc._insternal();
@@ -22,7 +17,7 @@ class TodoBloc {
   Stream<List<Todo>> get todoListStream => _todoListController.stream;
 
   void getTiemWithDate(String date) async {
-    final todos = await _todoRepository.getTodos(date: date);
+    final todos = DUMMY_DATA.where((element) => element.date == date).toList();
     _todoListController.sink.add(todos);
   }
 
@@ -31,14 +26,16 @@ class TodoBloc {
       required String? content,
       required String date,
       required TodoStatus status}) async {
-    final item = TodoItemsCompanion.insert(
+    final item = Todo(
+      id: DUMMY_DATA.length + 1,
       title: title,
-      content: Value(content),
-      status: status.name,
+      content: content,
       date: date,
-      createdAt: Value(DateTime.now()),
+      status: status.name,
+      createdAt: DateTime.now(),
     );
-    await _todoRepository.addNewTodo(item);
+    DUMMY_DATA.add(item);
+
     getTiemWithDate(date);
   }
 
@@ -46,10 +43,6 @@ class TodoBloc {
   //   todoList.remove(todo);
   //   todoSink.add(todoList);
   // }
-
-  void deleteAll() {
-    _todoRepository.deleteAll();
-  }
 
   void dispose() {
     _todoListController.close();
