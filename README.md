@@ -38,4 +38,4 @@
 - 캘린더 앱 만들기(3)
 - 수업내용
   1. 로컬데이터베이스 drift를 이용하여 CURD 구현하기
-  2. dimissable 사용하기
+  2. dismissable 위젯 사용하기
