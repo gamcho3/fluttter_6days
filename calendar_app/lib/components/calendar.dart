@@ -35,7 +35,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
         return isSameDay(_isSelectedDay, day);
       },
       onDaySelected: (selectedDay, focusedDay) {
-        _bloc.getTiemWithDate(CommonMethod.dateFormatToString(selectedDay));
+        _bloc.getTodoWithDate(CommonMethod.dateFormatToString(selectedDay));
         // 선택날짜와 보여지는 달 저장
         setState(() {
           _isSelectedDay = selectedDay;
