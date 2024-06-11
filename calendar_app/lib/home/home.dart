@@ -24,8 +24,6 @@ class Home extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // final bloc = TodoBloc();
-          // bloc.deleteAll();
           showModalBottomSheet(
               context: context,
               builder: (context) {

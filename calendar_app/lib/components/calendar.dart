@@ -20,13 +20,6 @@ class _CustomCalendarState extends State<CustomCalendar> {
   final _bloc = TodoBloc();
 
   @override
-  void initState() {
-    // 현재 날짜의 할일을 가져옴
-    // _bloc.getTiemWithDate(CommonMethod.dateFormatToString(DateTime.now()));
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return TableCalendar(
       firstDay: DateTime.utc(2024, 01, 01),
@@ -42,7 +35,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
         return isSameDay(_isSelectedDay, day);
       },
       onDaySelected: (selectedDay, focusedDay) {
-        // _bloc.getTiemWithDate(CommonMethod.dateFormatToString(selectedDay));
+        _bloc.getTiemWithDate(CommonMethod.dateFormatToString(selectedDay));
         // 선택날짜와 보여지는 달 저장
         setState(() {
           _isSelectedDay = selectedDay;

@@ -37,10 +37,6 @@ class AppDatabase extends _$AppDatabase {
     await (delete(todoItems)..where((e) => e.id.equals(id))).go();
   }
 
-  Future<void> deleteAllTodoItem() async {
-    await delete(todoItems).go();
-  }
-
   @override
   int get schemaVersion => 1;
 }

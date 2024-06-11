@@ -21,7 +21,7 @@ class TodoBloc {
 
   Stream<List<Todo>> get todoListStream => _todoListController.stream;
 
-  void getTiemWithDate(String date) async {
+  void getTodoWithDate(String date) async {
     final todos = await _todoRepository.getTodos(date: date);
     _todoListController.sink.add(todos);
   }
@@ -39,16 +39,12 @@ class TodoBloc {
       createdAt: Value(DateTime.now()),
     );
     await _todoRepository.addNewTodo(item);
-    getTiemWithDate(date);
+    getTodoWithDate(date);
   }
 
-  // void remove(Todo todo) {
-  //   todoList.remove(todo);
-  //   todoSink.add(todoList);
-  // }
-
-  void deleteAll() {
-    _todoRepository.deleteAll();
+  void removeTodo(Todo todo) {
+    _todoRepository.deleteTodoById(todo.id);
+    getTodoWithDate(todo.date);
   }
 
   void dispose() {

@@ -1,21 +1,21 @@
 import 'package:calendar_app/model/todo_model.dart';
 import 'package:flutter/material.dart';
 
-class ScheduleButton extends StatefulWidget {
+class TodoStatusButton extends StatefulWidget {
   final TodoStatus type;
   final ValueNotifier<TodoStatus> selectedType;
 
-  const ScheduleButton({
+  const TodoStatusButton({
     super.key,
     required this.type,
     required this.selectedType,
   });
 
   @override
-  State<ScheduleButton> createState() => _ScheduleButtonState();
+  State<TodoStatusButton> createState() => _TodoStatusButtonState();
 }
 
-class _ScheduleButtonState extends State<ScheduleButton> {
+class _TodoStatusButtonState extends State<TodoStatusButton> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -26,8 +26,8 @@ class _ScheduleButtonState extends State<ScheduleButton> {
           valueListenable: widget.selectedType,
           builder: (context, value, _) {
             return Container(
-              width: 40,
-              height: 40,
+              width: 35,
+              height: 35,
               decoration: BoxDecoration(
                   color: widget.type.color,
                   shape: BoxShape.circle,
@@ -40,7 +40,8 @@ class _ScheduleButtonState extends State<ScheduleButton> {
               child: Center(
                 child: Text(
                   widget.type.name.split('')[0].toUpperCase(),
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 15),
                 ),
               ),
             );

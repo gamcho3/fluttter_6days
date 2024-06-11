@@ -7,7 +7,6 @@ abstract class TodoRepository {
   Future<void> addNewTodo(TodoItemsCompanion todo);
   // Future<void> updateTodo(Todo todo);
   Future<void> deleteTodoById(int id);
-  Future<void> deleteAll();
 }
 
 class TodoRepositoryImpl implements TodoRepository {
@@ -28,9 +27,5 @@ class TodoRepositoryImpl implements TodoRepository {
   @override
   Future<void> deleteTodoById(int id) {
     return _database.deleteTodoItem(id);
-  }
-
-  Future<void> deleteAll() {
-    return _database.deleteAllTodoItem();
   }
 }
